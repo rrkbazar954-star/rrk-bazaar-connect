@@ -5,9 +5,9 @@ export type DeliveryLocation = {
   line1: string;
   city: string;
   pincode: string;
-  lat?: number;
-  lng?: number;
-  addressId?: string;
+  lat?: number | undefined;
+  lng?: number | undefined;
+  addressId?: string | undefined;
 };
 
 const STORAGE_KEY = "rrk.location";
