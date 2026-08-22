@@ -50,10 +50,10 @@ export const Route = createFileRoute("/")({
 const categoryIcons: Record<string, { icon: typeof Wheat; className: string }> = {
   grocery: { icon: Wheat, className: "bg-primary" },
   vegetables: { icon: Carrot, className: "bg-accent" },
-  dairy: { icon: Milk, className: "bg-secondary" },
+  dairy: { icon: Milk, className: "fresh-gradient" },
   snacks: { icon: Cookie, className: "bg-primary/85" },
   household: { icon: SprayCan, className: "bg-accent/85" },
-  "personal-care": { icon: Sparkles, className: "bg-secondary/85" },
+  "personal-care": { icon: Sparkles, className: "fresh-gradient" },
   medicine: { icon: Pill, className: "bg-primary/70" },
   electronics: { icon: PlugZap, className: "bg-accent/70" },
 };
