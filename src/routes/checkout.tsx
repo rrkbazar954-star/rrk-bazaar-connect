@@ -50,7 +50,7 @@ function CheckoutPage() {
         .insert({
           customer_id: user.id,
           shop_id: shopId,
-          address: location as unknown as Record<string, unknown>,
+          address: JSON.parse(JSON.stringify(location)),
           items_total: total,
           delivery_fee: DELIVERY_FEE,
           total: total + DELIVERY_FEE,
