@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ImageOff, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
@@ -26,7 +26,6 @@ function ProductPage() {
   const { id } = Route.useParams();
   const { t, lang } = useI18n();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: product, isLoading } = useQuery(productQuery(id));
 
@@ -40,10 +39,8 @@ function ProductPage() {
       toast.success(t("added"));
     },
     onError: (error: Error) => {
-      if (error.message === "auth") {
-        toast.error(t("login_required"));
-        void navigate({ to: "/auth" });
-      } else toast.error(error.message);
+      if (error.message === "auth") toast.error("कुछ सेकंड बाद फिर कोशिश करें");
+      else toast.error(error.message);
     },
   });
 

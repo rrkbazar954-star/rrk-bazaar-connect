@@ -69,6 +69,26 @@ export function LocationBar() {
           <ChevronDown className="size-4 opacity-80" />
         </button>
       </SheetTrigger>
+
+      <div className="grid grid-cols-2 gap-2 px-4 pb-1">
+        <button
+          type="button"
+          onClick={useGps}
+          disabled={gpsBusy}
+          className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-card/15 px-2 text-xs font-bold text-primary-foreground ring-1 ring-inset ring-card/30"
+        >
+          <Crosshair className="size-4" />
+          {t("use_gps")}
+        </button>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-card/15 px-2 text-xs font-bold text-primary-foreground ring-1 ring-inset ring-card/30"
+        >
+          <PencilLine className="size-4" />
+          {t("manual_location")}
+        </button>
+      </div>
       <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto rounded-t-3xl">
         <SheetHeader>
           <SheetTitle>{t("select_location")}</SheetTitle>

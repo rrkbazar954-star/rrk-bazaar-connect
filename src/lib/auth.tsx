@@ -10,6 +10,7 @@ type AuthValue = {
   session: Session | null;
   roles: AppRole[];
   loading: boolean;
+  isGuest: boolean;
   hasRole: (role: AppRole) => boolean;
   refreshRoles: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -38,7 +39,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       void loadRoles(nextSession?.user?.id);
     });
 
-    void supabase.auth.getSession().then(({ data }) => {
+    void supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session) {
+        // TESTING PHASE: no login wall — every visitor gets a temporary guest
+        // session so cart, checkout and orders work without signing in.
+        // Remove this block to re-enable the login requirement.
+        const { data: guest } = await supabase.auth.signInAnonymously();
+        setSession(guest.session ?? null);
+        setLoading(false);
+        void loadRoles(guest.session?.user?.id);
+        return;
+      }
       setSession(data.session);
       setLoading(false);
       void loadRoles(data.session?.user?.id);
@@ -53,11 +64,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       roles,
       loading,
+      isGuest: !!session?.user?.is_anonymous,
       hasRole: (role) => roles.includes(role),
       refreshRoles: () => loadRoles(session?.user?.id),
       signOut: async () => {
         await supabase.auth.signOut();
         setRoles([]);
+        // Keep the app usable without login during the testing phase.
+        await supabase.auth.signInAnonymously();
       },
     }),
     [session, roles, loading],

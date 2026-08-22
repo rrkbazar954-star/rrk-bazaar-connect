@@ -33,20 +33,6 @@ function CartPage() {
 
   const total = (items ?? []).reduce((sum, item) => sum + (item.products?.price ?? 0) * item.qty, 0);
 
-  if (!user) {
-    return (
-      <AppShell>
-        <PageHeader title={t("cart")} />
-        <div className="space-y-4 p-6 text-center">
-          <p className="text-sm text-muted-foreground">{t("login_required")}</p>
-          <Button asChild className="h-12 w-full">
-            <Link to="/auth">{t("login")}</Link>
-          </Button>
-        </div>
-      </AppShell>
-    );
-  }
-
   return (
     <AppShell>
       <PageHeader title={t("cart")} subtitle={`${items?.length ?? 0} items`} />

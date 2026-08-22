@@ -33,8 +33,8 @@ export function BottomNav() {
               <Link
                 to={to}
                 className={cn(
-                  "relative flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1 text-[11px] font-semibold transition-colors",
-                  active ? "text-primary" : "text-muted-foreground",
+                  "relative flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1 text-[11px] font-semibold transition-colors",
+                  active ? "bg-primary/10 text-primary" : "text-muted-foreground",
                 )}
               >
                 <span className="relative">
