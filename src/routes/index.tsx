@@ -1,7 +1,23 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Camera, Mic, Search as SearchIcon, ShieldCheck, Truck, Wallet } from "lucide-react";
+import {
+  Camera,
+  Carrot,
+  Cookie,
+  Milk,
+  Mic,
+  Pill,
+  PlugZap,
+  Search as SearchIcon,
+  ShieldCheck,
+  ShoppingBasket,
+  Sparkles,
+  SprayCan,
+  Truck,
+  Wallet,
+  Wheat,
+} from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
 import { LocationBar } from "@/components/LocationBar";
@@ -30,6 +46,17 @@ export const Route = createFileRoute("/")({
   }),
   component: Home,
 });
+
+const categoryIcons: Record<string, { icon: typeof Wheat; className: string }> = {
+  grocery: { icon: Wheat, className: "bg-primary" },
+  vegetables: { icon: Carrot, className: "bg-accent" },
+  dairy: { icon: Milk, className: "bg-secondary" },
+  snacks: { icon: Cookie, className: "bg-primary/85" },
+  household: { icon: SprayCan, className: "bg-accent/85" },
+  "personal-care": { icon: Sparkles, className: "bg-secondary/85" },
+  medicine: { icon: Pill, className: "bg-primary/70" },
+  electronics: { icon: PlugZap, className: "bg-accent/70" },
+};
 
 const trustItems = [
   { icon: Truck, hi: "तेज़ डिलीवरी", en: "Fast delivery" },
@@ -93,6 +120,15 @@ function Home() {
         </form>
       </header>
 
+      <section className="px-4 pt-4">
+        <div className="brand-gradient rounded-2xl px-5 py-6 text-center text-primary-foreground float-shadow">
+          <h2 className="text-xl font-extrabold leading-snug">
+            {lang === "en" ? "Welcome to RRK Bazaar" : "RRK Bazaar में स्वागत है"}
+          </h2>
+          <p className="mt-1 text-sm opacity-90">आपकी जरूरत, आपके पास।</p>
+        </div>
+      </section>
+
       <ul className="no-scrollbar mt-3 flex gap-2 overflow-x-auto px-4">
         {trustItems.map((item) => (
           <li
@@ -106,30 +142,36 @@ function Home() {
       </ul>
 
       <section className="mt-5 px-4">
-        <h2 className="text-base">{t("categories")}</h2>
-        <div className="mt-3 grid grid-cols-4 gap-2.5">
+        <h2 className="text-base font-extrabold">{t("categories")}</h2>
+        <div className="mt-3 grid grid-cols-4 gap-x-2 gap-y-4">
           {categories.isLoading &&
-            Array.from({ length: 8 }).map((_, index) => <Skeleton key={index} className="h-20 rounded-2xl" />)}
-          {categories.data?.map((category) => (
-            <Link
-              key={category.id}
-              to="/category/$slug"
-              params={{ slug: category.slug }}
-              className="flex min-h-20 flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-card px-1 py-2 text-center card-shadow"
-            >
-              <span className="fresh-gradient flex size-9 items-center justify-center rounded-full text-sm font-bold text-primary-foreground">
-                {localizedName(category, lang).slice(0, 1)}
-              </span>
-              <span className="line-clamp-2 text-[11px] font-semibold leading-tight">
-                {localizedName(category, lang)}
-              </span>
-            </Link>
-          ))}
+            Array.from({ length: 8 }).map((_, index) => <Skeleton key={index} className="h-24 rounded-2xl" />)}
+          {categories.data?.map((category) => {
+            const meta = categoryIcons[category.slug] ?? { icon: ShoppingBasket, className: "bg-primary" };
+            const Icon = meta.icon;
+            return (
+              <Link
+                key={category.id}
+                to="/category/$slug"
+                params={{ slug: category.slug }}
+                className="flex flex-col items-center gap-1.5 text-center"
+              >
+                <span
+                  className={`flex size-16 items-center justify-center rounded-full text-primary-foreground card-shadow ${meta.className}`}
+                >
+                  <Icon className="size-7" strokeWidth={2.2} />
+                </span>
+                <span className="line-clamp-2 text-[11px] font-semibold leading-tight">
+                  {localizedName(category, lang)}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
       <section className="mt-6 px-4">
-        <h2 className="text-base">{t("popular")}</h2>
+        <h2 className="text-base font-extrabold">{t("popular")}</h2>
         <div className="mt-3">
           {products.isLoading ? (
             <div className="grid grid-cols-2 gap-3">
