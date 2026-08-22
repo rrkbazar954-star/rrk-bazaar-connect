@@ -38,7 +38,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       void loadRoles(nextSession?.user?.id);
     });
 
-    void supabase.auth.getSession().then(({ data }) => {
+    void supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session) {
+        // TESTING PHASE: no login wall — every visitor gets a temporary guest
+        // session so cart, checkout and orders work without signing in.
+        // Remove this block to re-enable the login requirement.
+        const { data: guest } = await supabase.auth.signInAnonymously();
+        setSession(guest.session ?? null);
+        setLoading(false);
+        void loadRoles(guest.session?.user?.id);
+        return;
+      }
       setSession(data.session);
       setLoading(false);
       void loadRoles(data.session?.user?.id);
