@@ -68,6 +68,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut: async () => {
         await supabase.auth.signOut();
         setRoles([]);
+        // Keep the app usable without login during the testing phase.
+        await supabase.auth.signInAnonymously();
       },
     }),
     [session, roles, loading],
