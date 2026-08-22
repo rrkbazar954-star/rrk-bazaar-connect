@@ -10,6 +10,7 @@ type AuthValue = {
   session: Session | null;
   roles: AppRole[];
   loading: boolean;
+  isGuest: boolean;
   hasRole: (role: AppRole) => boolean;
   refreshRoles: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -63,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       roles,
       loading,
+      isGuest: !!session?.user?.is_anonymous,
       hasRole: (role) => roles.includes(role),
       refreshRoles: () => loadRoles(session?.user?.id),
       signOut: async () => {
