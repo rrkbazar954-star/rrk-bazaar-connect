@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ImageOff, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
@@ -26,7 +26,6 @@ function ProductPage() {
   const { id } = Route.useParams();
   const { t, lang } = useI18n();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: product, isLoading } = useQuery(productQuery(id));
 
