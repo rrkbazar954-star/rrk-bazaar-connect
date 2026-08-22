@@ -1,7 +1,7 @@
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const MODEL = "google/gemini-3.5-flash";
 
-type Parsed = { keywords: string[]; label?: string };
+type Parsed = { keywords: string[]; label?: string | undefined };
 
 function extractJson(text: string): Parsed | null {
   const match = text.match(/\{[\s\S]*\}/);

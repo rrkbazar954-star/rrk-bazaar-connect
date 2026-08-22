@@ -64,7 +64,7 @@ export function AppShell({ children, nav = true }: { children: ReactNode; nav?: 
   );
 }
 
-export function PageHeader({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
+export function PageHeader({ title, subtitle, right }: { title: string; subtitle?: string | undefined; right?: ReactNode | undefined }) {
   return (
     <header className="brand-gradient sticky top-0 z-30 px-4 pb-4 pt-5 text-primary-foreground">
       <div className="flex items-start justify-between gap-3">

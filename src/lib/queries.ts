@@ -39,7 +39,7 @@ export const categoriesQuery = {
   },
 };
 
-export function productsQuery(options: { categoryId?: string; limit?: number } = {}) {
+export function productsQuery(options: { categoryId?: string | undefined; limit?: number | undefined } = {}) {
   return {
     queryKey: ["products", options.categoryId ?? "all", options.limit ?? 50],
     queryFn: async (): Promise<Product[]> => {

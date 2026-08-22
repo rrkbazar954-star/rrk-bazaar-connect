@@ -8,7 +8,7 @@ import { useI18n } from "@/lib/i18n";
 import { addToCart, formatINR, setCartQty, type Product } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 
-type Props = { product: Product; cartItem?: { id: string; qty: number } };
+type Props = { product: Product; cartItem?: { id: string; qty: number } | undefined };
 
 export function ProductCard({ product, cartItem }: Props) {
   const { t, lang } = useI18n();
