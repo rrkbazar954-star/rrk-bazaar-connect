@@ -36,7 +36,7 @@ function CheckoutPage() {
 
   const placeOrder = useMutation({
     mutationFn: async () => {
-      if (!user) throw new Error(t("login_required"));
+      if (!user) throw new Error("कुछ सेकंड बाद फिर कोशिश करें");
       if (!location) throw new Error(t("select_location"));
       const cart = (items ?? []).filter((item) => item.products);
       if (!cart.length) throw new Error(t("cart_empty"));

@@ -40,10 +40,8 @@ function ProductPage() {
       toast.success(t("added"));
     },
     onError: (error: Error) => {
-      if (error.message === "auth") {
-        toast.error(t("login_required"));
-        void navigate({ to: "/auth" });
-      } else toast.error(error.message);
+      if (error.message === "auth") toast.error("कुछ सेकंड बाद फिर कोशिश करें");
+      else toast.error(error.message);
     },
   });
 

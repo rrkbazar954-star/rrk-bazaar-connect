@@ -27,7 +27,7 @@ export function ProductCard({ product, cartItem }: Props) {
       if (!cartItem) toast.success(t("added"));
     },
     onError: (error: Error) => {
-      if (error.message === "auth") toast.error(t("login_required"));
+      if (error.message === "auth") toast.error("कुछ सेकंड बाद फिर कोशिश करें");
       else toast.error(error.message);
     },
   });
