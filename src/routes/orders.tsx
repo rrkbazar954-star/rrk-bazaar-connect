@@ -37,20 +37,6 @@ function OrdersPage() {
     },
   });
 
-  if (!user) {
-    return (
-      <AppShell>
-        <PageHeader title={t("orders")} />
-        <div className="space-y-4 p-6 text-center">
-          <p className="text-sm text-muted-foreground">{t("login_required")}</p>
-          <Button asChild className="h-12 w-full">
-            <Link to="/auth">{t("login")}</Link>
-          </Button>
-        </div>
-      </AppShell>
-    );
-  }
-
   return (
     <AppShell>
       <PageHeader title={t("orders")} subtitle={`${orders?.length ?? 0}`} />

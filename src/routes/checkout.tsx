@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -87,20 +87,6 @@ function CheckoutPage() {
     },
     onError: (error: Error) => toast.error(error.message),
   });
-
-  if (!user) {
-    return (
-      <AppShell>
-        <PageHeader title={t("checkout")} />
-        <div className="space-y-4 p-6 text-center">
-          <p className="text-sm text-muted-foreground">{t("login_required")}</p>
-          <Button asChild className="h-12 w-full">
-            <Link to="/auth">{t("login")}</Link>
-          </Button>
-        </div>
-      </AppShell>
-    );
-  }
 
   return (
     <AppShell>
