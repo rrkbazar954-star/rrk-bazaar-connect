@@ -411,50 +411,100 @@ export type Database = {
       shops: {
         Row: {
           address: string | null
+          area: string | null
+          category_id: string | null
           city: string | null
+          closes_at: string | null
           commission_pct: number
           created_at: string
+          delivery_radius_km: number
           description: string | null
+          district: string | null
+          gst_number: string | null
+          has_gst: boolean
           id: string
           image_url: string | null
           is_active: boolean
+          lat: number | null
+          lng: number | null
+          min_order_amount: number
           name: string
+          opens_at: string | null
           owner_id: string | null
+          owner_name: string | null
+          payment_options: string[]
           phone: string | null
           pincode: string | null
+          state: string | null
           updated_at: string
         }
         Insert: {
           address?: string | null
+          area?: string | null
+          category_id?: string | null
           city?: string | null
+          closes_at?: string | null
           commission_pct?: number
           created_at?: string
+          delivery_radius_km?: number
           description?: string | null
+          district?: string | null
+          gst_number?: string | null
+          has_gst?: boolean
           id?: string
           image_url?: string | null
           is_active?: boolean
+          lat?: number | null
+          lng?: number | null
+          min_order_amount?: number
           name: string
+          opens_at?: string | null
           owner_id?: string | null
+          owner_name?: string | null
+          payment_options?: string[]
           phone?: string | null
           pincode?: string | null
+          state?: string | null
           updated_at?: string
         }
         Update: {
           address?: string | null
+          area?: string | null
+          category_id?: string | null
           city?: string | null
+          closes_at?: string | null
           commission_pct?: number
           created_at?: string
+          delivery_radius_km?: number
           description?: string | null
+          district?: string | null
+          gst_number?: string | null
+          has_gst?: boolean
           id?: string
           image_url?: string | null
           is_active?: boolean
+          lat?: number | null
+          lng?: number | null
+          min_order_amount?: number
           name?: string
+          opens_at?: string | null
           owner_id?: string | null
+          owner_name?: string | null
+          payment_options?: string[]
           phone?: string | null
           pincode?: string | null
+          state?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "shops_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
