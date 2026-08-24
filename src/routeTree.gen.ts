@@ -20,6 +20,10 @@ import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as ShopCreateRouteImport } from './routes/shop.create'
+import { Route as ShopEarningsRouteImport } from './routes/shop.earnings'
+import { Route as ShopEditRouteImport } from './routes/shop.edit'
+import { Route as ShopOrdersRouteImport } from './routes/shop.orders'
+import { Route as ShopProductsRouteImport } from './routes/shop.products'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +80,26 @@ const ShopCreateRoute = ShopCreateRouteImport.update({
   path: '/shop/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopEarningsRoute = ShopEarningsRouteImport.update({
+  id: '/shop/earnings',
+  path: '/shop/earnings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopEditRoute = ShopEditRouteImport.update({
+  id: '/shop/edit',
+  path: '/shop/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopOrdersRoute = ShopOrdersRouteImport.update({
+  id: '/shop/orders',
+  path: '/shop/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopProductsRoute = ShopProductsRouteImport.update({
+  id: '/shop/products',
+  path: '/shop/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +112,10 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/create': typeof ShopCreateRoute
+  '/shop/earnings': typeof ShopEarningsRoute
+  '/shop/edit': typeof ShopEditRoute
+  '/shop/orders': typeof ShopOrdersRoute
+  '/shop/products': typeof ShopProductsRoute
   '/shop/': typeof ShopIndexRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +129,10 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/create': typeof ShopCreateRoute
+  '/shop/earnings': typeof ShopEarningsRoute
+  '/shop/edit': typeof ShopEditRoute
+  '/shop/orders': typeof ShopOrdersRoute
+  '/shop/products': typeof ShopProductsRoute
   '/shop': typeof ShopIndexRoute
 }
 export interface FileRoutesById {
@@ -115,6 +147,10 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/create': typeof ShopCreateRoute
+  '/shop/earnings': typeof ShopEarningsRoute
+  '/shop/edit': typeof ShopEditRoute
+  '/shop/orders': typeof ShopOrdersRoute
+  '/shop/products': typeof ShopProductsRoute
   '/shop/': typeof ShopIndexRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +166,10 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/product/$id'
     | '/shop/create'
+    | '/shop/earnings'
+    | '/shop/edit'
+    | '/shop/orders'
+    | '/shop/products'
     | '/shop/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +183,10 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/product/$id'
     | '/shop/create'
+    | '/shop/earnings'
+    | '/shop/edit'
+    | '/shop/orders'
+    | '/shop/products'
     | '/shop'
   id:
     | '__root__'
@@ -156,6 +200,10 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/product/$id'
     | '/shop/create'
+    | '/shop/earnings'
+    | '/shop/edit'
+    | '/shop/orders'
+    | '/shop/products'
     | '/shop/'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +218,10 @@ export interface RootRouteChildren {
   CategorySlugRoute: typeof CategorySlugRoute
   ProductIdRoute: typeof ProductIdRoute
   ShopCreateRoute: typeof ShopCreateRoute
+  ShopEarningsRoute: typeof ShopEarningsRoute
+  ShopEditRoute: typeof ShopEditRoute
+  ShopOrdersRoute: typeof ShopOrdersRoute
+  ShopProductsRoute: typeof ShopProductsRoute
   ShopIndexRoute: typeof ShopIndexRoute
 }
 
@@ -252,6 +304,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop/earnings': {
+      id: '/shop/earnings'
+      path: '/shop/earnings'
+      fullPath: '/shop/earnings'
+      preLoaderRoute: typeof ShopEarningsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/edit': {
+      id: '/shop/edit'
+      path: '/shop/edit'
+      fullPath: '/shop/edit'
+      preLoaderRoute: typeof ShopEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/orders': {
+      id: '/shop/orders'
+      path: '/shop/orders'
+      fullPath: '/shop/orders'
+      preLoaderRoute: typeof ShopOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/products': {
+      id: '/shop/products'
+      path: '/shop/products'
+      fullPath: '/shop/products'
+      preLoaderRoute: typeof ShopProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -266,6 +346,10 @@ const rootRouteChildren: RootRouteChildren = {
   CategorySlugRoute: CategorySlugRoute,
   ProductIdRoute: ProductIdRoute,
   ShopCreateRoute: ShopCreateRoute,
+  ShopEarningsRoute: ShopEarningsRoute,
+  ShopEditRoute: ShopEditRoute,
+  ShopOrdersRoute: ShopOrdersRoute,
+  ShopProductsRoute: ShopProductsRoute,
   ShopIndexRoute: ShopIndexRoute,
 }
 export const routeTree = rootRouteImport
