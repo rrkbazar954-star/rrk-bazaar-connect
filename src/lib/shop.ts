@@ -122,7 +122,7 @@ export function shopProductsQuery(shopId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id,name,price,mrp,unit,stock,is_active,image_url,category_id")
+        .select("id,name,name_hi,description,price,mrp,unit,stock,is_active,image_url,category_id")
         .eq("shop_id", shopId!)
         .order("name");
       if (error) throw error;
@@ -130,3 +130,41 @@ export function shopProductsQuery(shopId: string | undefined) {
     },
   };
 }
+
+export type ShopProduct = {
+  id: string;
+  name: string;
+  name_hi: string | null;
+  description: string | null;
+  price: number;
+  mrp: number | null;
+  unit: string;
+  stock: number;
+  is_active: boolean;
+  image_url: string | null;
+  category_id: string | null;
+};
+
+export type ProductFormValues = Omit<ShopProduct, "id">;
+
+export async function createProduct(shopId: string, values: ProductFormValues) {
+  const payload: TablesInsert<"products"> = { ...values, shop_id: shopId };
+  const { error } = await supabase.from("products").insert(payload);
+  if (error) throw error;
+}
+
+export async function updateProduct(productId: string, values: Partial<ProductFormValues>) {
+  const { error } = await supabase.from("products").update(values).eq("id", productId);
+  if (error) throw error;
+}
+
+export async function setProductStock(productId: string, stock: number) {
+  const { error } = await supabase.from("products").update({ stock }).eq("id", productId);
+  if (error) throw error;
+}
+
+export async function setOrderStatus(orderId: string, status: "accepted" | "rejected" | "ready") {
+  const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
+  if (error) throw error;
+}
+
