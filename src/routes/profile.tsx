@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PlusCircle, Store } from "lucide-react";
+
 
 import { AppShell, PageHeader } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -40,6 +42,21 @@ function ProfilePage() {
             </Button>
           </>
         )}
+
+        <section className="space-y-2">
+          <h2 className="text-sm font-bold text-muted-foreground">दुकान / Seller</h2>
+          <Button asChild variant="secondary" className="h-12 w-full justify-start">
+            <Link to="/shop">
+              <Store className="mr-2 size-4" /> My Shop
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="h-12 w-full justify-start">
+            <Link to="/shop/create">
+              <PlusCircle className="mr-2 size-4" /> दुकान बनाएँ
+            </Link>
+          </Button>
+        </section>
+
 
         <section className="space-y-2">
           <h2 className="text-sm font-bold text-muted-foreground">{t("language")}</h2>
