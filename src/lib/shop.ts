@@ -25,12 +25,13 @@ export type Shop = {
   payment_options: string[];
   has_gst: boolean;
   gst_number: string | null;
+  upi_id: string | null;
   commission_pct: number;
   is_active: boolean;
 };
 
 export const SHOP_SELECT =
-  "id,owner_id,owner_name,name,description,category_id,image_url,phone,address,area,city,district,state,pincode,lat,lng,opens_at,closes_at,delivery_radius_km,min_order_amount,payment_options,has_gst,gst_number,commission_pct,is_active";
+  "id,owner_id,owner_name,name,description,category_id,image_url,phone,address,area,city,district,state,pincode,lat,lng,opens_at,closes_at,delivery_radius_km,min_order_amount,payment_options,has_gst,gst_number,upi_id,commission_pct,is_active";
 
 export const PAYMENT_OPTIONS = [
   { value: "cod", hi: "कैश ऑन डिलीवरी", en: "Cash on delivery" },
@@ -99,6 +100,23 @@ export async function resolveShopImage(value: string | null): Promise<string | n
   return data?.signedUrl ?? null;
 }
 
+/** Uploads a product photo/video to product-media and returns a long-lived signed URL. */
+export async function uploadProductMedia(userId: string, file: File) {
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+  const path = `${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const { error } = await supabase.storage.from("product-media").upload(path, file, { upsert: true });
+  if (error) throw error;
+  const { data } = await supabase.storage.from("product-media").createSignedUrl(path, 60 * 60 * 24 * 3650);
+  if (!data?.signedUrl) throw new Error("URL not available");
+  return data.signedUrl;
+}
+
+/** Discount percentage from MRP vs selling price (0 when there is none). */
+export function discountPct(mrp: number | null | undefined, price: number) {
+  if (!mrp || mrp <= price) return 0;
+  return Math.round(((mrp - price) / mrp) * 100);
+}
+
 export function shopOrdersQuery(shopId: string | undefined) {
   return {
     queryKey: ["shop-orders", shopId],
@@ -122,7 +140,7 @@ export function shopProductsQuery(shopId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id,name,name_hi,description,price,mrp,unit,stock,is_active,image_url,category_id")
+        .select("id,name,name_hi,description,price,mrp,unit,stock,is_active,image_url,images,video_url,colors,sizes,category_id")
         .eq("shop_id", shopId!)
         .order("name");
       if (error) throw error;
@@ -142,6 +160,10 @@ export type ShopProduct = {
   stock: number;
   is_active: boolean;
   image_url: string | null;
+  images: string[];
+  video_url: string | null;
+  colors: string[];
+  sizes: string[];
   category_id: string | null;
 };
 
