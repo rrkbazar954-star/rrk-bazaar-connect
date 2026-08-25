@@ -42,6 +42,7 @@ const empty: ShopFormValues = {
   payment_options: ["cod"],
   has_gst: false,
   gst_number: "",
+  upi_id: "",
 };
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -95,17 +96,26 @@ export function ShopForm({
     }
   }
 
-  function useGps() {
+  function useGps(silent = false) {
     if (!("geolocation" in navigator)) return;
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setValues((prev) => ({ ...prev, lat: pos.coords.latitude, lng: pos.coords.longitude }));
-        toast.success(lang === "en" ? "Location captured" : "लोकेशन मिल गई");
+        if (!silent) toast.success(lang === "en" ? "Location captured" : "लोकेशन मिल गई");
       },
-      () => toast.info(lang === "en" ? "Enter the address manually" : "पता खुद भर दें"),
+      () => {
+        if (!silent) toast.info(lang === "en" ? "Enter the address manually" : "पता खुद भर दें");
+      },
       { timeout: 12000 },
     );
   }
+
+  // New shops capture the live GPS location automatically.
+  useEffect(() => {
+    if (shop) return;
+    useGps(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shop]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -221,7 +231,7 @@ export function ShopForm({
             />
           </Field>
         </div>
-        <Button type="button" variant="secondary" className="h-12 w-full" onClick={useGps}>
+        <Button type="button" variant="secondary" className="h-12 w-full" onClick={() => useGps()}>
           <Crosshair className="mr-2 size-4" />
           {values.lat != null
             ? `${values.lat.toFixed(4)}, ${values.lng?.toFixed(4)}`
@@ -294,6 +304,16 @@ export function ShopForm({
             })}
           </div>
         </Field>
+        {values.payment_options.includes("upi") && (
+          <Field label={en ? "Your UPI ID (to receive payments)" : "आपकी UPI ID (पेमेंट लेने के लिए)"}>
+            <Input
+              placeholder="name@upi"
+              value={values.upi_id ?? ""}
+              onChange={(e) => set("upi_id", e.target.value.trim())}
+              className="h-12"
+            />
+          </Field>
+        )}
       </section>
 
       <section className="space-y-3 rounded-2xl border border-border bg-card p-4 card-shadow">
