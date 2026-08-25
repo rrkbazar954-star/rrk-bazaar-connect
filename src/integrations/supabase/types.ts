@@ -312,10 +312,12 @@ export type Database = {
       products: {
         Row: {
           category_id: string | null
+          colors: string[]
           created_at: string
           description: string | null
           id: string
           image_url: string | null
+          images: string[]
           is_active: boolean
           keywords: string[]
           mrp: number | null
@@ -323,16 +325,20 @@ export type Database = {
           name_hi: string | null
           price: number
           shop_id: string
+          sizes: string[]
           stock: number
           unit: string
           updated_at: string
+          video_url: string | null
         }
         Insert: {
           category_id?: string | null
+          colors?: string[]
           created_at?: string
           description?: string | null
           id?: string
           image_url?: string | null
+          images?: string[]
           is_active?: boolean
           keywords?: string[]
           mrp?: number | null
@@ -340,16 +346,20 @@ export type Database = {
           name_hi?: string | null
           price: number
           shop_id: string
+          sizes?: string[]
           stock?: number
           unit?: string
           updated_at?: string
+          video_url?: string | null
         }
         Update: {
           category_id?: string | null
+          colors?: string[]
           created_at?: string
           description?: string | null
           id?: string
           image_url?: string | null
+          images?: string[]
           is_active?: boolean
           keywords?: string[]
           mrp?: number | null
@@ -357,9 +367,11 @@ export type Database = {
           name_hi?: string | null
           price?: number
           shop_id?: string
+          sizes?: string[]
           stock?: number
           unit?: string
           updated_at?: string
+          video_url?: string | null
         }
         Relationships: [
           {
@@ -437,6 +449,7 @@ export type Database = {
           pincode: string | null
           state: string | null
           updated_at: string
+          upi_id: string | null
         }
         Insert: {
           address?: string | null
@@ -466,6 +479,7 @@ export type Database = {
           pincode?: string | null
           state?: string | null
           updated_at?: string
+          upi_id?: string | null
         }
         Update: {
           address?: string | null
@@ -495,6 +509,7 @@ export type Database = {
           pincode?: string | null
           state?: string | null
           updated_at?: string
+          upi_id?: string | null
         }
         Relationships: [
           {
