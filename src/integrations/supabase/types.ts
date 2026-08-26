@@ -309,6 +309,44 @@ export type Database = {
           },
         ]
       }
+      product_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          product_id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          product_id: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          product_id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category_id: string | null
@@ -324,12 +362,15 @@ export type Database = {
           name: string
           name_hi: string | null
           price: number
+          rating_avg: number
+          rating_count: number
           shop_id: string
           sizes: string[]
           stock: number
           unit: string
           updated_at: string
           video_url: string | null
+          views_count: number
         }
         Insert: {
           category_id?: string | null
@@ -345,12 +386,15 @@ export type Database = {
           name: string
           name_hi?: string | null
           price: number
+          rating_avg?: number
+          rating_count?: number
           shop_id: string
           sizes?: string[]
           stock?: number
           unit?: string
           updated_at?: string
           video_url?: string | null
+          views_count?: number
         }
         Update: {
           category_id?: string | null
@@ -366,12 +410,15 @@ export type Database = {
           name?: string
           name_hi?: string | null
           price?: number
+          rating_avg?: number
+          rating_count?: number
           shop_id?: string
           sizes?: string[]
           stock?: number
           unit?: string
           updated_at?: string
           video_url?: string | null
+          views_count?: number
         }
         Relationships: [
           {
@@ -554,6 +601,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_product_view: {
+        Args: { _product_id: string }
+        Returns: undefined
       }
       owns_shop: { Args: { _shop_id: string }; Returns: boolean }
     }
