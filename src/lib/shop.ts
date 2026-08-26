@@ -140,7 +140,7 @@ export function shopProductsQuery(shopId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id,name,name_hi,description,price,mrp,unit,stock,is_active,image_url,images,video_url,colors,sizes,category_id")
+        .select("id,name,name_hi,description,price,mrp,unit,stock,is_active,image_url,images,video_url,colors,sizes,category_id,rating_avg,rating_count,views_count")
         .eq("shop_id", shopId!)
         .order("name");
       if (error) throw error;
@@ -165,9 +165,12 @@ export type ShopProduct = {
   colors: string[];
   sizes: string[];
   category_id: string | null;
+  rating_avg: number;
+  rating_count: number;
+  views_count: number;
 };
 
-export type ProductFormValues = Omit<ShopProduct, "id">;
+export type ProductFormValues = Omit<ShopProduct, "id" | "rating_avg" | "rating_count" | "views_count">;
 
 export async function createProduct(shopId: string, values: ProductFormValues) {
   const payload: TablesInsert<"products"> = { ...values, shop_id: shopId };

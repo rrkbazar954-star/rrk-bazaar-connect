@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
-import { AppShell, PageHeader } from "@/components/AppShell";
+import { PageHeader } from "@/components/AppShell";
+import { SellerShell } from "@/components/SellerShell";
 import { useAuth } from "@/lib/auth";
 import { formatINR } from "@/lib/queries";
 import { myShopQuery, shopOrdersQuery } from "@/lib/shop";
@@ -34,15 +35,15 @@ function ShopEarningsPage() {
 
   if (!shop) {
     return (
-      <AppShell>
+      <SellerShell>
         <PageHeader title="Earnings" subtitle="कोई दुकान नहीं" />
         <div className="p-6 text-center text-sm text-muted-foreground">पहले दुकान बनाएँ।</div>
-      </AppShell>
+      </SellerShell>
     );
   }
 
   return (
-    <AppShell>
+    <SellerShell>
       <PageHeader title="Earnings" subtitle={shop.name} />
       <div className="space-y-4 p-4">
         <section className="rounded-2xl border border-border bg-card p-4 card-shadow">
@@ -79,7 +80,7 @@ function ShopEarningsPage() {
           </div>
         </section>
       </div>
-    </AppShell>
+    </SellerShell>
   );
 }
 

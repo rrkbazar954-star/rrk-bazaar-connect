@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Boxes, ClipboardList, IndianRupee, Pencil, Store } from "lucide-react";
 
-import { AppShell, PageHeader } from "@/components/AppShell";
+import { PageHeader } from "@/components/AppShell";
+import { SellerShell } from "@/components/SellerShell";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { formatINR } from "@/lib/queries";
@@ -40,7 +41,7 @@ function MyShopPage() {
 
   if (!isLoading && !shop) {
     return (
-      <AppShell>
+      <SellerShell>
         <PageHeader title="My Shop" subtitle="अभी कोई दुकान नहीं" />
         <div className="space-y-4 p-6 text-center">
           <p className="text-sm text-muted-foreground">आपने अभी दुकान नहीं बनाई है।</p>
@@ -48,12 +49,12 @@ function MyShopPage() {
             <Link to="/shop/create">दुकान बनाएँ</Link>
           </Button>
         </div>
-      </AppShell>
+      </SellerShell>
     );
   }
 
   return (
-    <AppShell>
+    <SellerShell>
       <PageHeader title={shop?.name ?? "My Shop"} subtitle={shop?.city ?? undefined} />
       <div className="space-y-4 p-4">
         <section className="rounded-2xl border border-border bg-card p-4 card-shadow">
@@ -95,7 +96,7 @@ function MyShopPage() {
           <Tile to="/shop/earnings" icon={IndianRupee} title="Earnings" sub={formatINR(earnings)} />
         </div>
       </div>
-    </AppShell>
+    </SellerShell>
   );
 }
 
