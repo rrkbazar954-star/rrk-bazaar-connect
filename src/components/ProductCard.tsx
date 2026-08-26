@@ -7,6 +7,8 @@ import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
 import { addToCart, formatINR, setCartQty, type Product } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
+import { RatingStars } from "@/components/Rating";
+import { discountPct } from "@/lib/shop";
 
 type Props = { product: Product; cartItem?: { id: string; qty: number } | undefined };
 
@@ -33,10 +35,16 @@ export function ProductCard({ product, cartItem }: Props) {
   });
 
   const soldOut = product.stock <= 0;
+  const off = discountPct(product.mrp, product.price);
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card card-shadow">
-      <Link to="/product/$id" params={{ id: product.id }} className="block">
+      <Link to="/product/$id" params={{ id: product.id }} className="relative block">
+        {off > 0 && (
+          <span className="absolute left-2 top-2 z-10 rounded-lg bg-accent px-1.5 py-0.5 text-[10px] font-extrabold text-accent-foreground">
+            {off}% OFF
+          </span>
+        )}
         <div className="flex aspect-square items-center justify-center bg-surface">
           {product.image_url ? (
             <img
@@ -55,6 +63,7 @@ export function ProductCard({ product, cartItem }: Props) {
           {title}
         </Link>
         <p className="text-xs text-muted-foreground">{product.unit}</p>
+        <RatingStars value={Number(product.rating_avg ?? 0)} count={product.rating_count ?? 0} />
         <div className="mt-auto flex items-end justify-between gap-2 pt-1.5">
           <div>
             <p className="text-base font-bold">{formatINR(product.price)}</p>

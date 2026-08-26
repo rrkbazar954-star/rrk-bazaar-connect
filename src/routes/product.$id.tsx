@@ -3,7 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ImageOff, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 
+import { useEffect, useState } from "react";
+
 import { AppShell } from "@/components/AppShell";
+import { RatingInput, RatingStars } from "@/components/Rating";
+import { Textarea } from "@/components/ui/textarea";
+import { rateProduct, reviewsQuery, trackProductView } from "@/lib/reviews";
+import { discountPct } from "@/lib/shop";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
@@ -28,6 +34,34 @@ function ProductPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { data: product, isLoading } = useQuery(productQuery(id));
+  const { data: reviews } = useQuery(reviewsQuery(id));
+  const [stars, setStars] = useState(0);
+  const [comment, setComment] = useState("");
+
+  useEffect(() => {
+    void trackProductView(id);
+  }, [id]);
+
+  const myReview = (reviews ?? []).find((r) => r.user_id === user?.id);
+  useEffect(() => {
+    if (myReview) {
+      setStars(myReview.rating);
+      setComment(myReview.comment ?? "");
+    }
+  }, [myReview?.id]);
+
+  const rate = useMutation({
+    mutationFn: async (value: number) => {
+      if (!user) throw new Error("auth");
+      await rateProduct(user.id, id, value, comment);
+    },
+    onSuccess: () => {
+      toast.success("रेटिंग सेव हो गई");
+      void queryClient.invalidateQueries({ queryKey: ["product-reviews", id] });
+      void queryClient.invalidateQueries({ queryKey: ["product", id] });
+    },
+    onError: (error: Error) => toast.error(error.message === "auth" ? "कुछ सेकंड बाद फिर कोशिश करें" : error.message),
+  });
 
   const add = useMutation({
     mutationFn: async () => {
@@ -74,10 +108,16 @@ function ProductPage() {
           <div className="space-y-2 p-4">
             <h2 className="text-xl">{title}</h2>
             <p className="text-sm text-muted-foreground">{product.unit}</p>
+            <RatingStars value={Number(product.rating_avg ?? 0)} count={product.rating_count ?? 0} size="md" />
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-extrabold">{formatINR(product.price)}</span>
               {product.mrp && product.mrp > product.price && (
                 <span className="text-sm text-muted-foreground line-through">{formatINR(product.mrp)}</span>
+              )}
+              {discountPct(product.mrp, product.price) > 0 && (
+                <span className="rounded-lg bg-accent px-1.5 py-0.5 text-xs font-extrabold text-accent-foreground">
+                  {discountPct(product.mrp, product.price)}% OFF
+                </span>
               )}
             </div>
             {product.description && <p className="pt-2 text-sm leading-relaxed">{product.description}</p>}
@@ -85,6 +125,34 @@ function ProductPage() {
               {product.stock > 0 ? `In stock: ${product.stock}` : t("out_of_stock")}
             </p>
           </div>
+
+          <section className="space-y-3 border-t border-border p-4">
+            <h3 className="text-sm font-bold">रेटिंग दें</h3>
+            <RatingInput value={stars} onChange={setStars} disabled={rate.isPending} />
+            <Textarea
+              value={comment}
+              onChange={(event) => setComment(event.target.value)}
+              placeholder="अपना अनुभव लिखें (वैकल्पिक)"
+              rows={2}
+            />
+            <Button
+              variant="secondary"
+              className="h-11 w-full font-bold"
+              disabled={stars < 1 || rate.isPending}
+              onClick={() => rate.mutate(stars)}
+            >
+              {myReview ? "रेटिंग अपडेट करें" : "रेटिंग सेव करें"}
+            </Button>
+
+            <ul className="space-y-2 pt-2">
+              {(reviews ?? []).map((review) => (
+                <li key={review.id} className="rounded-2xl border border-border bg-card p-3">
+                  <RatingStars value={review.rating} />
+                  {review.comment && <p className="mt-1 text-xs leading-relaxed">{review.comment}</p>}
+                </li>
+              ))}
+            </ul>
+          </section>
 
           <div className="fixed inset-x-0 bottom-16 z-30 mx-auto max-w-md border-t border-border bg-card p-3 safe-bottom">
             <Button

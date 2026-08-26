@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { AppShell, PageHeader } from "@/components/AppShell";
+import { PageHeader } from "@/components/AppShell";
+import { SellerShell } from "@/components/SellerShell";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { formatINR, statusLabels, type OrderStatus } from "@/lib/queries";
@@ -40,15 +41,15 @@ function ShopOrdersPage() {
 
   if (!shop) {
     return (
-      <AppShell>
+      <SellerShell>
         <PageHeader title="Orders" subtitle="कोई दुकान नहीं" />
         <div className="p-6 text-center text-sm text-muted-foreground">पहले दुकान बनाएँ।</div>
-      </AppShell>
+      </SellerShell>
     );
   }
 
   return (
-    <AppShell>
+    <SellerShell>
       <PageHeader title="Orders" subtitle={shop.name} />
       <div className="space-y-3 p-4">
         {(orders ?? []).length === 0 && (
@@ -89,6 +90,6 @@ function ShopOrdersPage() {
           );
         })}
       </div>
-    </AppShell>
+    </SellerShell>
   );
 }

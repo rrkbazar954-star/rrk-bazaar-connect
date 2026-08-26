@@ -1,7 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export const PRODUCT_SELECT =
-  "id,name,name_hi,description,price,mrp,unit,stock,image_url,images,video_url,colors,sizes,keywords,category_id,shop_id,is_active";
+  "id,name,name_hi,description,price,mrp,unit,stock,image_url,images,video_url,colors,sizes,keywords,category_id,shop_id,is_active,rating_avg,rating_count,views_count";
 
 export type Product = {
   id: string;
@@ -21,6 +21,9 @@ export type Product = {
   category_id: string | null;
   shop_id: string;
   is_active: boolean;
+  rating_avg: number;
+  rating_count: number;
+  views_count: number;
 };
 
 export type Category = {

@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Boxes, ClipboardList, IndianRupee, Pencil, Store } from "lucide-react";
 
-import { AppShell, PageHeader } from "@/components/AppShell";
+import { PageHeader } from "@/components/AppShell";
+import { SellerShell } from "@/components/SellerShell";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { formatINR } from "@/lib/queries";
@@ -40,7 +41,7 @@ function MyShopPage() {
 
   if (!isLoading && !shop) {
     return (
-      <AppShell>
+      <SellerShell>
         <PageHeader title="My Shop" subtitle="अभी कोई दुकान नहीं" />
         <div className="space-y-4 p-6 text-center">
           <p className="text-sm text-muted-foreground">आपने अभी दुकान नहीं बनाई है।</p>
@@ -48,12 +49,12 @@ function MyShopPage() {
             <Link to="/shop/create">दुकान बनाएँ</Link>
           </Button>
         </div>
-      </AppShell>
+      </SellerShell>
     );
   }
 
   return (
-    <AppShell>
+    <SellerShell>
       <PageHeader title={shop?.name ?? "My Shop"} subtitle={shop?.city ?? undefined} />
       <div className="space-y-4 p-4">
         <section className="rounded-2xl border border-border bg-card p-4 card-shadow">
@@ -94,8 +95,30 @@ function MyShopPage() {
           <Tile to="/shop/orders" icon={ClipboardList} title="Orders" sub={`${orders?.length ?? 0} ऑर्डर`} />
           <Tile to="/shop/earnings" icon={IndianRupee} title="Earnings" sub={formatINR(earnings)} />
         </div>
+
+        <section className="rounded-2xl border border-border bg-card p-4 card-shadow">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold">प्रोडक्ट परफॉर्मेंस</h2>
+            <p className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+              <Eye className="size-4" /> {totalViews} क्लिक
+            </p>
+          </div>
+          <ul className="mt-3 space-y-2">
+            {topProducts.length === 0 && <li className="text-xs text-muted-foreground">अभी कोई डेटा नहीं।</li>}
+            {topProducts.map((p) => (
+              <li key={p.id} className="flex items-center justify-between gap-2 rounded-xl bg-surface px-3 py-2">
+                <span className="min-w-0 flex-1 truncate text-xs font-semibold">{p.name_hi || p.name}</span>
+                <RatingStars value={Number(p.rating_avg ?? 0)} count={p.rating_count ?? 0} />
+                <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                  <Eye className="size-3.5" /> {p.views_count ?? 0}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
-    </AppShell>
+
+    </SellerShell>
   );
 }
 

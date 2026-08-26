@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { AppShell, PageHeader } from "@/components/AppShell";
+import { PageHeader } from "@/components/AppShell";
+import { SellerShell } from "@/components/SellerShell";
 import { ShopForm } from "@/components/ShopForm";
 import { useAuth } from "@/lib/auth";
 import { createShop, myShopQuery } from "@/lib/shop";
@@ -28,7 +29,7 @@ function CreateShopPage() {
   const { data: existing } = useQuery(myShopQuery(user?.id));
 
   return (
-    <AppShell>
+    <SellerShell>
       <PageHeader title="दुकान बनाएँ" subtitle="Create your shop" />
       {existing ? (
         <div className="p-6 text-center text-sm text-muted-foreground">
@@ -46,6 +47,6 @@ function CreateShopPage() {
           }}
         />
       )}
-    </AppShell>
+    </SellerShell>
   );
 }

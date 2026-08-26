@@ -4,7 +4,8 @@ import { useRef, useState } from "react";
 import { Film, ImagePlus, Loader2, Minus, Package, Plus, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { AppShell, PageHeader } from "@/components/AppShell";
+import { PageHeader } from "@/components/AppShell";
+import { SellerShell } from "@/components/SellerShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,15 +72,15 @@ function ShopProductsPage() {
 
   if (!shop) {
     return (
-      <AppShell>
+      <SellerShell>
         <PageHeader title="Products" subtitle="कोई दुकान नहीं" />
         <div className="p-6 text-center text-sm text-muted-foreground">पहले दुकान बनाएँ।</div>
-      </AppShell>
+      </SellerShell>
     );
   }
 
   return (
-    <AppShell>
+    <SellerShell>
       <PageHeader title="Products & Stock" subtitle={shop.name} />
       <div className="space-y-4 p-4">
         {editing ? (
@@ -165,7 +166,7 @@ function ShopProductsPage() {
           );
         })}
       </div>
-    </AppShell>
+    </SellerShell>
   );
 }
 
