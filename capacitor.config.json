@@ -2,5 +2,9 @@
 {
   "appId": "com.rrkbazaar.app",
   "appName": "RRK Bazaar",
-  "webDir": ".output/public"
+  "webDir": ".output/public",
+  "server": {
+    "url": "https://rrk-bazaar-connect.lovable.app/",
+    "cleartext": false
+  }
 }
