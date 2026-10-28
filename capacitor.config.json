@@ -2,5 +2,5 @@
 {
   "appId": "com.rrkbazaar.app",
   "appName": "RRK Bazaar",
-  "webDir": "dist"
+  "webDir": ".output/public"
 }
