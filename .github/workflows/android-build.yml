@@ -32,11 +32,17 @@ jobs:
       - name: Build web app
         run: npm run build
 
+      - name: Create Capacitor entry file
+        run: |
+          mkdir -p .output/public
+          echo '<!doctype html><html><head><meta charset="utf-8"><title>RRK Bazaar</title></head><body></body></html>' > .output/public/index.html
+
       - name: Show web output
         run: |
           echo "Checking generated files..."
-          ls -la
-          find . -maxdepth 5 -type f -name index.html -not -path './node_modules/*' -not -path './.git/*' -print
+          cat capacitor.config.json
+          ls -la .output/public
+          find .output/public -maxdepth 2 -type f -print
 
       - name: Create Android project
         run: npx cap add android
