@@ -37,6 +37,14 @@ jobs:
           mkdir -p .output/public
           echo '<!doctype html><html><head><meta charset="utf-8"><title>RRK Bazaar</title></head><body></body></html>' > .output/public/index.html
 
+      - name: Check Capacitor HTML file
+        run: |
+          echo "Checking webDir..."
+          cat capacitor.config.json
+          echo "Checking index.html..."
+          ls -la .output/public
+          test -f .output/public/index.html && echo "INDEX FOUND" || echo "INDEX MISSING"
+
       - name: Show web output
         run: |
           echo "Checking generated files..."
