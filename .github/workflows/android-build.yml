@@ -1,58 +1,60 @@
+
 name: RRK Bazaar Android Build
 
 on:
-workflow_dispatch:
-push:
-branches:
-- main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
-contents: read
+  contents: read
 
 jobs:
-android:
-runs-on: ubuntu-latest
-steps:
-- name: Get project code
-uses: actions/checkout@v4
+  android:
+    runs-on: ubuntu-latest
 
-  - name: Set up Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: 22
+    steps:
+      - name: Get project code
+        uses: actions/checkout@v4
 
-  - name: Install project dependencies
-    run: npm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-  - name: Install Capacitor
-    run: npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+      - name: Install project dependencies
+        run: npm install
 
-  - name: Build web app
-    run: npm run build
+      - name: Install Capacitor
+        run: npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
 
-  - name: Show web output
-    run: |
-      echo "Checking generated files..."
-      ls -la
-      find . -maxdepth 5 -type f -name index.html -not -path './node_modules/*' -not -path './.git/*' -print
+      - name: Build web app
+        run: npm run build
 
-  - name: Create Android project
-    run: npx cap add android
+      - name: Show web output
+        run: |
+          echo "Checking generated files..."
+          ls -la
+          find . -maxdepth 5 -type f -name index.html -not -path './node_modules/*' -not -path './.git/*' -print
 
-  - name: Sync Android project
-    run: npx cap sync android
+      - name: Create Android project
+        run: npx cap add android
 
-  - name: Build APK and AAB
-    run: |
-      cd android
-      chmod +x gradlew
-      ./gradlew assembleDebug bundleDebug
+      - name: Sync Android project
+        run: npx cap sync android
 
-  - name: Save APK and AAB
-    uses: actions/upload-artifact@v4
-    with:
-      name: RRK-Bazaar-Android-Files
-      path: |
-        android/app/build/outputs/apk/debug/*.apk
-        android/app/build/outputs/bundle/debug/*.aab
-      if-no-files-found: error
+      - name: Build APK and AAB
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug bundleDebug
+
+      - name: Save APK and AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: RRK-Bazaar-Android-Files
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/bundle/debug/*.aab
+          if-no-files-found: error
